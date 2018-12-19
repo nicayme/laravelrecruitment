@@ -3,6 +3,8 @@
 
 @section('content')
 
+
+
 	<h1> Edit Talent </h1>
 
 	<form method="POST" action="http://127.0.0.1:8080/laravelrecruitment/talent/{{$talent->id}} ">
@@ -30,7 +32,7 @@
 		 </div>
 
 
-		<div class="form-group">
+		<div class="form-group text-center">
 			<button type="submit" name="submit" class="btn btn-primary">Update Talent</button>
 		</div>
 	</form>
@@ -42,7 +44,7 @@
 		@method('DELETE')
 		@csrf
 
-		<div class="form-group">
+		<div class="form-group text-center">
 			<button type="submit" class="btn btn-danger">Delete Talent</button>
 		</div>
 

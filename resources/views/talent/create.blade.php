@@ -3,36 +3,57 @@
 
 @section('content')
 
-	<h1>Add Talent </h1> 
+<h1>Add Talent </h1> 
 
 
-	<form method="POST" action="http://127.0.0.1:8080/laravelrecruitment/talent">
+<form method="POST" action="http://127.0.0.1:8080/laravelrecruitment/talent" class="mt-4" enctype="multipart/form-data">
 
-		@csrf
-		
-		<div class="row">
-		    <div class="col">
-		      <input type="text" class="form-control" name="firstname" placeholder="First name">
-		    </div>
-		    <div class="col">
-		      <input type="text" class="form-control" name="lastname"  placeholder="Last name">
-		    </div>
-		 </div>
-		
-		<div class="form-group">
-		    <label for="inputAddress">Skill</label>
-		    <input type="text" class="form-control" name="skill" id="inputAddress" placeholder="Skill">
-		 </div>
+	@csrf
 
-		 <div class="form-group">
-		    <label for="inputAddress">Location</label>
-		    <input type="text" class="form-control" name="location" id="inputAddress" placeholder="Location">
-		 </div>
+	<div class="row mb-3">
+		<div class="col">
+			<label for="firstname">First name</label>
+			<input type="text" class="form-control" name="firstname" placeholder="First name" value="{{ old('firstname') }}">
+		</div>
+		<div class="col">
+			<label for="lastname">Last name</label>
+			<input type="text" class="form-control" name="lastname"  placeholder="Last name" value="{{ old('lastname') }}">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="skill">Skill</label>
+		<input type="text" class="form-control" name="skill" id="skill" placeholder="Skill" value="{{ old('skill') }}">
+	</div>
+
+	<div class="form-group">
+		<label for="location">Location</label>
+		<input type="text" class="form-control" name="location" id="location" placeholder="Location" value="{{ old('location') }}">
+	</div>
+
+	<div class="form-group">
+		<label for="profilepic">Image</label>
+		<input type="text" class="form-control" name="profilepic" id="profilepic" >
+	</div>
 
 
-		
-		<button type="submit" name="submit" class="btn btn-primary">Submit</button>
+	<div class="col-12 text-center">
+		<button type="submit" name="submit" class="btn btn-primary"> Submit </button>
+	</div>
 
-	</form>
-	
+</form>
+
+
+@if ($errors->any())
+<div class="alert alert-danger mt-4" role="alert">
+	<ul>
+		@foreach ($errors->all() as $error)
+
+		<li> {{ $error }}</li>
+
+		@endforeach
+	</ul>
+</div>
+@endif
+
 @endsection

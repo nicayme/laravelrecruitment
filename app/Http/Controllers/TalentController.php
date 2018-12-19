@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 use App\Talent;
 
 class TalentController extends Controller
@@ -16,9 +16,11 @@ class TalentController extends Controller
     public function index()
     {
 
-        $talent = Talent::all();
-
-
+        // $talent = Talent::all();
+        $talent = Talent::paginate(10);
+        // $talent = DB::table('talents')->paginate(10);
+        
+        // return view('talent.index', ['talent' => $talent]);
         return view('talent.index',compact('talent'));
     }
 
@@ -29,6 +31,7 @@ class TalentController extends Controller
      */
     public function create()
     {
+
         return view('talent.create');
     }
 
@@ -41,17 +44,41 @@ class TalentController extends Controller
     public function store()
     {
 
-        $talent = new Talent();
+        // Talent::create([
+        //     'lastname' => request('lastname'),
+        //     'firstname' => request('firstname'),
+        //     'skill' => request('skill'),
+        //     'location' => request('location')
+        // ]);
 
-        $talent->lastname = request('lastname');
-        $talent->firstname = request('firstname');
-        $talent->skill = request('skill');
-        $talent->location = request('location');
 
-        // return request()->all();
+        if($request->hasfile('filename'))
+        {
+            $name=$image->getClientOriginalName();
+            $image->move(public_path().'/images/', $name); 
+        }
 
-       $talent->save();
+        Talent::create(request()->validate(
+            [
+                'lastname' => ['required', 'min:3', 'max:191'],
+                'firstname' => ['required', 'min:3', 'max:191'],
+                'skill' => ['required', 'min:3', 'max:191'],
+                'location' => ['required', 'min:3', 'max:191']
+            ]));
 
+        // Talent::create(request(['lastname', 'firstname', 'skill', 'location']));
+
+       //  $talent = new Talent();
+
+       //  $talent->lastname = request('lastname');
+       //  $talent->firstname = request('firstname');
+       //  $talent->skill = request('skill');
+       //  $talent->location = request('location');
+
+       // $talent->save();
+       // return request()->all();
+
+       session()->flash('createdtalent','Talent has been created');
 
        return redirect('http://127.0.0.1:8080/laravelrecruitment/talent');
 
@@ -104,7 +131,7 @@ class TalentController extends Controller
 
          $talent->save();
 
-         return redirect('http://127.0.0.1:8080/laravelrecruitment/talent');
+         return redirect('talent');
     }
 
     /**
@@ -119,7 +146,7 @@ class TalentController extends Controller
         
         $talent->delete();
 
-        return redirect('http://127.0.0.1:8080/laravelrecruitment/talent');
+        return redirect('talent');
 
     }
 }
